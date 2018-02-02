@@ -1,6 +1,7 @@
 
 package org.arpit.java2blog.model;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,11 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /*
  * This is our model class and it corresponds to Customer table in database
  */
 @Entity
 @Table(name="CUSTOMER")
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "customer")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Customer{
 
 	@Id

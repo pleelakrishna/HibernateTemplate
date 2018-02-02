@@ -9,6 +9,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.hibernate.HibernateUtil;
+
 @Repository
 public class CustomerDaoImpl implements CustomerDao{
 
@@ -27,7 +30,12 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	public Customer getCustomer(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
+		int intialSize = CacheManager.ALL_CACHE_MANAGERS.get(0).getCache("org.arpit.java2blog.model.Customer").getSize();
+		System.out.print("intialSize:"+intialSize);
 		Customer customer = (Customer) session.get(Customer.class, id);
+		System.out.println(sessionFactory.getStatistics().getSecondLevelCacheHitCount());
+		int size = CacheManager.ALL_CACHE_MANAGERS.get(0).getCache("org.arpit.java2blog.model.Customer").getSize();
+		System.out.print("size:"+size);
 		return customer;
 	}
 
